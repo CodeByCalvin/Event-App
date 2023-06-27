@@ -1,86 +1,82 @@
-import React, { useState, useEffect } from "react";
-//Event Listener Code//
-/* const App = (event) => {
-  const handleKeyDown = (event) => {};
-    
-  return (
-    <div className="container">
-      <h1>Event Listener</h1>
-    </div>
-  );
-}; */
-//React List user can Update//
-// const list = [
-//   {
-//     id: "a",
-//     name: "Brunch",
-//   },
-//   {
-//     id: "b",
-//     name: "Meet x at z",
-//   },
-// ];
+import React, { useState } from "react";
+import { addEvent } from "../apiClient";
+import { Form, Button } from "react-bootstrap";
 
-const App = () => {
-  //API has a dummy list, this isn't needed//
-
-  const [list, setList] = useState([]);
+function AddEvent(props) {
   const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleAdd();
-    }
-  };
-
-  const handleChange = (event) => {
+  const handleChangeName = (event) => {
     setName(event.target.value);
   };
 
-  const handleAdd = () => {
+  const handleChangeDate = (event) => {
+    setDate(event.target.value);
+  };
+
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const handleAdd = async () => {
     const newItem = {
-      id: Date.now().toString(),
+      id: Date.now(),
       name: name,
+      date: date,
+      description: description,
     };
 
-    setList([...list, newItem]);
-    setName("");
+    try {
+      await addEvent(newItem);
+      props.setEventList((prevEvents) => [...prevEvents, newItem]);
+      setName("");
+      setDate("");
+      setDescription("");
+    } catch (error) {
+      console.error("Failed to add event:", error);
+    }
   };
 
   const handleDelete = (id) => {
-    setList(list.filter((item) => item.id !== id));
+    props.setEventList(props.eventList.filter((item) => item.id !== id));
   };
 
   return (
     <div className="container">
-      <h1>Event Listeners</h1>
+      <h2>Add Event</h2>
       <div>
-        <input type="text" value={name} onChange={handleChange} />
+        <label>
+          Name:
+          <input type="text" value={name} onChange={handleChangeName} />
+        </label>
+        {/* <label>
+          Date:
+          <input type="text" value={date} onChange={handleChangeDate} />
+        </label> */}
+        <Form.Group controlId="formEventDate">
+          <Form.Label>Date</Form.Label>
+          <Form.Control
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </Form.Group>
+        <label>
+          Description:
+          <input
+            type="text"
+            value={description}
+            onChange={handleChangeDescription}
+          />
+        </label>
         <button type="button" onClick={handleAdd}>
           Add
         </button>
       </div>
-
-      <ul>
-        {list.map((event) => (
-          <li key={event.id}>
-            <span className="Event">{event.name}</span>
-            <span className="Action" onClick={() => handleDelete(event.id)}>
-              &#10007
-            </span>
-          </li>
-        ))}
-      </ul>
+      <ul></ul>
     </div>
   );
-};
+}
 
-export default App;
+export default AddEvent;

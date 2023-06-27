@@ -2,10 +2,10 @@ Notes:
 - Local host is 3003. now 3002
 
 Todos for Ben: 
--
+- Login
 
 Todos for Calvin:
--
+- Dashboard
 
 Todos for Paul:
 - Event Listener

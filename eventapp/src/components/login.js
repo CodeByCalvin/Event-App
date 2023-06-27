@@ -41,4 +41,23 @@ function Login(props) {
   );
 }
 
+// function Signup(props) {
+//   const [disabled, changeDisabled] = useState(false);
+
+//   const signupHandler = (s) => {
+//     v.preventDefault();
+//     changeDisabled(true);
+//     props.client
+//       .signup(s.target.username.value, s.target.password.value)
+//       .then((response) => {
+//         changeDisabled(false);
+//         props.signup(response.data.token);
+//       })
+//       .catch((err) => {
+//         alert("an error has happend in the signup process");
+//         changeDisabled(false);
+//       });
+//   };
+// }
+
 export default Login;

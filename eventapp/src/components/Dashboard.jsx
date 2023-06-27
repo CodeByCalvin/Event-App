@@ -1,85 +1,104 @@
-import React, { useState, useEffect } from "react";
-import AddEvent from "./components/AddEvent";
+import { useState, useEffect } from "react";
+import { getEvents, deleteEvent, updateEvent } from "../apiClient";
+import EditEventModal from "./EditEventModal";
 
-function Dashboard(props) {
-  const [ads, setAds] = useState([
-    {
-      name: "This is a test event",
-      date: "25th February",
-      description: "This is my event description",
-    },
-    {
-      name: "This is a different test event",
-      date: "16th April",
-      description: "This is a different description",
-    },
-  ]);
-  const [currentAd, setCurrentAd] = useState(ads[0]);
+const Dashboard = () => {
+  const [eventList, setEventList] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  // Refresh the list of adverts
-  const refreshList = () => {
-    // props.client.getAds().then((res) => {
-    //   setAds(res.data);
-    // });
-  };
-
-  // Remove an advert
-  const removeAdvert = (id) => {
-    props.client.removeAd(id).then(() => refreshList());
-  };
-
-  // Update an advert
-  const updateAdvert = (ad) => {
-    setCurrentAd(ad);
-  };
-
-  // Refresh the list of adverts when the component is mounted
   useEffect(() => {
-    refreshList();
-  }, []);
+    const fetchEvents = async () => {
+      const data = await getEvents();
+      setEventList(data);
+    };
 
-  // Build the rows of the table of adverts
-  const buildrows = () => {
-    return ads.map((currentAd) => {
-      return (
-        <tr key={currentAd._id}>
-          <td>{currentAd.name}</td>
-          <td>{currentAd.date}</td>
-          <td>{currentAd.description}</td>
-          <td>
-            <button onClick={() => removeAdvert(currentAd._id)}> remove</button>
-            <button onClick={() => updateAdvert(currentAd)}> update</button>
-          </td>
-        </tr>
-      );
-    });
+    fetchEvents();
+  }, [eventList]);
+
+  const handleDelete = async (id) => {
+    await deleteEvent(id);
+    const newEventList = eventList.filter((event) => event._id !== id);
+    setEventList(newEventList);
+  };
+
+  const handleEdit = (event) => {
+    setSelectedEvent(event);
+    setShowEditModal(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+  };
+
+  const handleUpdateEvent = async (updatedEvent) => {
+    await updateEvent(updatedEvent._id, updatedEvent);
+    const newEventList = eventList.map((event) =>
+      event._id === updatedEvent._id ? updatedEvent : event
+    );
+    setEventList(newEventList);
+    setShowEditModal(false);
   };
 
   return (
-    <>
-      Dashboard
-      <br />
+    <div>
+      <h2>Event Dashboard</h2>
       <table>
         <thead>
           <tr>
-            <th>Advert Name</th>
+            <th>Name</th>
             <th>Date</th>
             <th>Description</th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody>{buildrows()}</tbody>
+        <tbody>
+          {eventList.map((event) => {
+            const dateObject = new Date(event.date);
+            const day = dateObject.getDate();
+            const monthNames = [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ];
+            const monthName = monthNames[dateObject.getMonth()];
+            const year = dateObject.getFullYear();
+            const formattedDate = `${day} ${monthName} ${year}`;
+            return (
+              <tr key={event._id}>
+                <td>{event.name}</td>
+                <td>{formattedDate}</td>
+                <td>{event.description}</td>
+                <td>
+                  <button onClick={() => handleEdit(event)}>Edit</button>
+                  <button onClick={() => handleDelete(event._id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
-      <br />
-      <br />
-      <AddEvent
-        refreshList={() => {
-          refreshList();
-          setCurrentAd(undefined);
-        }}
-        currentAd={currentAd}
-      />
-    </>
+      {showEditModal && selectedEvent && (
+        <EditEventModal
+          show={showEditModal}
+          handleClose={handleCloseEditModal}
+          event={selectedEvent}
+          updateEvent={handleUpdateEvent}
+        />
+      )}
+    </div>
   );
-}
+};
 
 export default Dashboard;
