@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3001";
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const getEvents = async () => {
   try {
@@ -41,3 +41,10 @@ export const deleteEvent = async (id) => {
     console.error(error);
   }
 };
+
+// async login(username, password) {
+//   return await axios({
+//     method: "post",
+//     url: `${API_URL}/login`
+//   })
+// }
