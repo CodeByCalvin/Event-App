@@ -8,6 +8,10 @@ function AddEvent(props) {
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
+  // Create an instance of ApiClient
+  // Replace tokenProvider and logoutHandler with actual implementations
+  const apiClient = new ApiClient();
+
   const handleChangeName = (event) => {
     setName(event.target.value);
   };
@@ -29,7 +33,8 @@ function AddEvent(props) {
     };
 
     try {
-      await ApiClient.addEvent(newItem);
+      // Now call addEvent on the apiClient instance
+      await apiClient.addEvent(newItem);
       props.setEventList((prevEvents) => [...prevEvents, newItem]);
       setName("");
       setDate("");

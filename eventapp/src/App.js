@@ -36,14 +36,11 @@ function App() {
   return (
     <div className="App">
       <h1>Event App</h1>
-      {token ? (
-        <div>
-          <Dashboard client={client} />
-          <AddEvent setEventList={setEventList} eventList={eventList} />
-        </div>
-      ) : (
-        <Login client={client} login={(token) => login(token)} />
-      )}
+      <div>
+        <Dashboard client={client} />
+        <AddEvent setEventList={setEventList} eventList={eventList} />
+      </div>
+      <Login />
     </div>
   );
 }
