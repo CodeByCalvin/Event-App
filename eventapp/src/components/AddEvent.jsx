@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { addEvent } from "../apiClient";
+import { ApiClient } from "../apiClient";
 import { Form, Button } from "react-bootstrap";
+import "../css/addEvent.css";
 
 function AddEvent(props) {
   const [name, setName] = useState("");
@@ -28,7 +29,7 @@ function AddEvent(props) {
     };
 
     try {
-      await addEvent(newItem);
+      await ApiClient.addEvent(newItem);
       props.setEventList((prevEvents) => [...prevEvents, newItem]);
       setName("");
       setDate("");
@@ -50,10 +51,7 @@ function AddEvent(props) {
           Name:
           <input type="text" value={name} onChange={handleChangeName} />
         </label>
-        {/* <label>
-          Date:
-          <input type="text" value={date} onChange={handleChangeDate} />
-        </label> */}
+        <br />
         <Form.Group controlId="formEventDate">
           <Form.Label>Date</Form.Label>
           <Form.Control

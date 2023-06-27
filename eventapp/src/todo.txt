@@ -9,3 +9,10 @@ Todos for Calvin:
 
 Todos for Paul:
 - Event Listener
+- CSS 
+-= Colour Pallet
+-= - Ivory = #F5FBEF
+-= - Cambridge Blue = #92AD94
+-= - Reseda Green = #748B75
+-= - Rose Ebony = #503D42
+-= - Rich Black = #0C1618

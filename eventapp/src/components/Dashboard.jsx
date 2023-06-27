@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
-import { getEvents, deleteEvent, updateEvent } from "../apiClient";
+import { ApiClient } from "../apiClient";
 import EditEventModal from "./EditEventModal";
+import "../css/dashboard.css";
+
+// Token and logout handler
+const dummyTokenProvider = () => localStorage.getItem("token");
+const dummyLogoutHandler = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/login";
+};
+
+const apiClient = new ApiClient(dummyTokenProvider, dummyLogoutHandler);
 
 const Dashboard = () => {
   const [eventList, setEventList] = useState([]);
@@ -9,7 +19,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const data = await getEvents();
+      const data = await apiClient.getEvents();
       setEventList(data);
     };
 
@@ -17,7 +27,7 @@ const Dashboard = () => {
   }, [eventList]);
 
   const handleDelete = async (id) => {
-    await deleteEvent(id);
+    await apiClient.deleteEvent(id);
     const newEventList = eventList.filter((event) => event._id !== id);
     setEventList(newEventList);
   };
@@ -32,7 +42,7 @@ const Dashboard = () => {
   };
 
   const handleUpdateEvent = async (updatedEvent) => {
-    await updateEvent(updatedEvent._id, updatedEvent);
+    await apiClient.updateEvent(updatedEvent._id, updatedEvent);
     const newEventList = eventList.map((event) =>
       event._id === updatedEvent._id ? updatedEvent : event
     );
