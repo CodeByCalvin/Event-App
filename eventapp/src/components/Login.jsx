@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import "../css/login.css";
+import LoginCSS from "../css/login.module.css";
+import { Container, Row, Col, Form } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Login(props) {
   const [disabled, setDisabled] = useState(false);
@@ -46,35 +48,38 @@ export default function Login(props) {
   }
 
   return (
-    <>
+    <Container>
       <h1>Login</h1>
-      <br />
-      <form onSubmit={handleSubmit}>
-        Username:
-        <br />
-        <input
-          type="text"
-          name="username"
-          value={username}
-          onChange={handleUsernameChange}
-          disabled={disabled}
-        />
-        <br />
-        Password:
-        <br />
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePasswordChange}
-          disabled={disabled}
-        />
-        <br />
-        <br />
-        <button type="submit" disabled={disabled}>
-          Login
-        </button>
-      </form>
-    </>
+      <Row>
+        <Col lg={6}>
+          <h2>Event App</h2>
+        </Col>
+        <Col lg={6}>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formUsername">
+              <Form.Control
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={username}
+                onChange={handleUsernameChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Control
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </Form.Group>
+            <button type="submit" className={LoginCSS.btn}>
+              Login
+            </button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 }

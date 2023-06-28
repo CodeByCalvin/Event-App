@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ApiClient } from "../apiClient";
 import { Form, Button } from "react-bootstrap";
-import "../css/addEvent.css";
+import "../css/addEvent.module.css";
 
 function AddEvent(props) {
   const [name, setName] = useState("");

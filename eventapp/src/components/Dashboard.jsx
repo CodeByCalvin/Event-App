@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { ApiClient } from "../apiClient";
 import EditEventModal from "./EditEventModal";
-import "../css/dashboard.css";
-import { set } from "mongoose";
+import AddEventModal from "./AddEventModal";
+import "../css/dashboard.module.css";
+import { Container, Row, Col, Table, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Token and logout handler
 const dummyTokenProvider = () => localStorage.getItem("token");
@@ -17,6 +19,7 @@ const Dashboard = () => {
   const [eventList, setEventList] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false); // state for showing AddEventModal
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -51,10 +54,23 @@ const Dashboard = () => {
     setShowEditModal(false);
   };
 
+  const handleCloseAddModal = () => {
+    setShowAddModal(false); // to close the AddEventModal
+  };
+
   return (
-    <div className="container">
-      <h2 className="sub-header">Event Dashboard</h2>
-      <table>
+    <Container>
+      <Row>
+        <Col>
+          <h2 className="sub-header">Event Dashboard</h2>
+        </Col>
+        <Col className="text-right">
+          <Button variant="success" onClick={() => setShowAddModal(true)}>
+            +
+          </Button>
+        </Col>
+      </Row>
+      <Table responsive="sm">
         <thead>
           <tr>
             <th>Name</th>
@@ -64,7 +80,9 @@ const Dashboard = () => {
           </tr>
         </thead>
         <tbody>
-          {eventList.map((event) => {
+          {eventList.map((event, index) => {
+            const key = event._id ?? index;
+
             const dateObject = new Date(event.date);
             const day = dateObject.getDate();
             const monthNames = [
@@ -85,23 +103,26 @@ const Dashboard = () => {
             const year = dateObject.getFullYear();
             const formattedDate = `${day} ${monthName} ${year}`;
             return (
-              <tr key={event._id}>
+              <tr key={key}>
                 <td>{event.name}</td>
                 <td>{formattedDate}</td>
                 <td>{event.description}</td>
                 <td>
-                  <button className="btn" onClick={() => handleEdit(event)}>
+                  <Button variant="primary" onClick={() => handleEdit(event)}>
                     Edit
-                  </button>
-                  <button onClick={() => handleDelete(event._id)}>
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(event._id)}
+                  >
                     Delete
-                  </button>
+                  </Button>
                 </td>
               </tr>
             );
           })}
         </tbody>
-      </table>
+      </Table>
       {showEditModal && selectedEvent && (
         <EditEventModal
           show={showEditModal}
@@ -110,7 +131,15 @@ const Dashboard = () => {
           updateEvent={handleUpdateEvent}
         />
       )}
-    </div>
+      {showAddModal && (
+        <AddEventModal
+          show={showAddModal}
+          handleClose={handleCloseAddModal}
+          setEventList={setEventList}
+          eventList={eventList}
+        />
+      )}
+    </Container>
   );
 };
 

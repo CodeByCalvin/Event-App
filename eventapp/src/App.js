@@ -39,7 +39,7 @@ function App() {
       {authenticated ? (
         <div>
           <Dashboard client={client} />
-          <AddEvent setEventList={setEventList} eventList={eventList} />
+          {/* <AddEvent setEventList={setEventList} eventList={eventList} /> */}
         </div>
       ) : (
         <Login

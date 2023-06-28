@@ -12,7 +12,11 @@ Todos for Paul:
 - CSS / Focus on Dashboard
 -= Colour Pallet
 -= - Ivory = #F5FBEF
+-= - Ash Gray = #D0DCD1
 -= - Cambridge Blue = #92AD94
 -= - Reseda Green = #748B75
 -= - Rose Ebony = #503D42
 -= - Rich Black = #0C1618
+- Turn CSS into modules
+-= - Import/impliment said modules to the respective areas
+-= - 

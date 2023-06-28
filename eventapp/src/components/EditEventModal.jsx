@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import "../css/editEventModal.css";
+import "../css/editEventModal.module.css";
 
 const EditEventModal = ({ show, handleClose, event, updateEvent }) => {
   const [name, setName] = useState(event.name);
