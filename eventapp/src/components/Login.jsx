@@ -49,11 +49,8 @@ export default function Login(props) {
 
   return (
     <Container>
-      <h1>Login</h1>
       <Row>
-        <Col lg={6}>
-          <h2>Event App</h2>
-        </Col>
+        <Col lg={6}></Col>
         <Col lg={6}>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formUsername">

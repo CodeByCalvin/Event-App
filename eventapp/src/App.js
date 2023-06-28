@@ -2,7 +2,6 @@ import "./App.css";
 import React from "react";
 import { useState } from "react";
 import Dashboard from "./components/Dashboard";
-import AddEvent from "./components/AddEvent";
 import { ApiClient } from "./apiClient";
 import Login from "./components/Login";
 
@@ -36,10 +35,12 @@ function App() {
   return (
     <div className="App">
       <h1>Event App</h1>
+      <br />
+      <br />
+
       {authenticated ? (
         <div>
           <Dashboard client={client} />
-          {/* <AddEvent setEventList={setEventList} eventList={eventList} /> */}
         </div>
       ) : (
         <Login

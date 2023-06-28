@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ApiClient } from "../apiClient";
 import EditEventModal from "./EditEventModal";
-import AddEventModal from "./AddEventModal";
+import AddEvent from "./AddEvent";
 import "../css/dashboard.module.css";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -62,7 +62,7 @@ const Dashboard = () => {
     <Container>
       <Row>
         <Col>
-          <h2 className="sub-header">Event Dashboard</h2>
+          <h2 className="sub-header">Your Event Dashboard</h2>
         </Col>
         <Col className="text-right">
           <Button variant="success" onClick={() => setShowAddModal(true)}>
@@ -132,7 +132,7 @@ const Dashboard = () => {
         />
       )}
       {showAddModal && (
-        <AddEventModal
+        <AddEvent
           show={showAddModal}
           handleClose={handleCloseAddModal}
           setEventList={setEventList}
