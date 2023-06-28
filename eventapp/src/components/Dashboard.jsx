@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { ApiClient } from "../apiClient";
 import EditEventModal from "./EditEventModal";
 import AddEvent from "./AddEvent";
-import "../css/dashboard.module.css";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "../css/dashboard.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 
 // Token and logout handler
 const dummyTokenProvider = () => localStorage.getItem("token");
@@ -65,9 +69,16 @@ const Dashboard = () => {
           <h2 className="sub-header">Your Event Dashboard</h2>
         </Col>
         <Col className="text-right">
-          <Button variant="success" onClick={() => setShowAddModal(true)}>
-            +
-          </Button>
+          <button
+            className={styles["post-btn"]}
+            onClick={() => setShowAddModal(true)}
+          >
+            <FontAwesomeIcon
+              icon={faCalendarPlus}
+              style={{ color: "#000000" }}
+            />{" "}
+            Add Event
+          </button>
         </Col>
       </Row>
       <Table responsive="sm">
@@ -108,15 +119,24 @@ const Dashboard = () => {
                 <td>{formattedDate}</td>
                 <td>{event.description}</td>
                 <td>
-                  <Button variant="primary" onClick={() => handleEdit(event)}>
-                    Edit
-                  </Button>
-                  <Button
-                    variant="danger"
+                  <button
+                    className={styles["edit-btn"]}
+                    onClick={() => handleEdit(event)}
+                  >
+                    <FontAwesomeIcon
+                      icon={faPenToSquare}
+                      style={{ color: "#000000" }}
+                    />
+                  </button>
+                  <button
+                    className={styles["delete-btn"]}
                     onClick={() => handleDelete(event._id)}
                   >
-                    Delete
-                  </Button>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      style={{ color: "#000000" }}
+                    />
+                  </button>
                 </td>
               </tr>
             );

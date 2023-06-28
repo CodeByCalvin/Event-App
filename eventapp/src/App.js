@@ -4,6 +4,7 @@ import { useState } from "react";
 import Dashboard from "./components/Dashboard";
 import { ApiClient } from "./apiClient";
 import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
   const [token, changeToken] = useState(localStorage.getItem("token"));
@@ -49,6 +50,8 @@ function App() {
           setAuthenticated={setAuthenticated}
         />
       )}
+
+      <Register />
     </div>
   );
 }

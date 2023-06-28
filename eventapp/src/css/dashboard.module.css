@@ -1,51 +1,43 @@
-/* body {
-  background: #f6f9f3;
-  color: #503d42;
-  column-width: 120px; */
-
-.Dashboard-header {
-  width: 100%;
-  height: 100vh;
-  background-color: red;
-  background-size: cover;
-  background-position: center;
-}
-.btn {
-  display: block;
-  margin: 50px auto;
-  width: fit-content;
-  border: 1px solid #0c1618;
-  padding: 14px 50px;
-  border-radius: 6px;
-  text-decoration: none;
-  color: #92ad94;
-  transition: background 0.5s;
-}
-.btn:hover {
-  background: #0c1618;
+.post-btn {
+  background-color: transparent;
+  border: none;
+  padding: 4px 8px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+  margin-right: 4px;
+  transition: all 0.3s ease-in-out;
+  font-weight: 700;
 }
 
-/* =- Site Header -= */
-.header-text {
-  margin-top: 20%;
-  font-size: 30px;
+.post-btn:hover {
+  background-color: transparent;
+  transform: scale(1.1);
 }
 
-.header-text h1 {
-  font-size: 60px;
-  margin-top: 20px;
+.edit-btn {
+  background-color: transparent;
+  border: none;
+  padding: 4px 8px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+  width: 10px;
+  margin-right: 4px;
 }
 
-/* =- Sub-Header -= */
-.sub-header {
-  text-align: left;
-  font: monospace;
-  margin-left: 10px;
-  margin-right: 10px;
-  padding: 0;
-  background: #748b75;
+.edit-btn:hover {
+  background-color: transparent;
+  transform: scale(1.1);
 }
 
-.font-xl {
-  font-size: 42px;
+.delete-btn {
+  background-color: transparent;
+  width: 10px;
+  border: none;
+  padding: 4px 8px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+}
+
+.delete-btn:hover {
+  transform: scale(1.1);
 }
