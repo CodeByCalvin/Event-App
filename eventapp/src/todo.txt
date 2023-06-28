@@ -9,7 +9,7 @@ Todos for Calvin:
 
 Todos for Paul:
 - Event Listener
-- CSS 
+- CSS / Focus on Dashboard
 -= Colour Pallet
 -= - Ivory = #F5FBEF
 -= - Cambridge Blue = #92AD94

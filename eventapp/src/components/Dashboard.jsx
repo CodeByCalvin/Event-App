@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ApiClient } from "../apiClient";
 import EditEventModal from "./EditEventModal";
 import "../css/dashboard.css";
+import { set } from "mongoose";
 
 // Token and logout handler
 const dummyTokenProvider = () => localStorage.getItem("token");
@@ -51,8 +52,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
-      <h2>Event Dashboard</h2>
+    <div className="container">
+      <h2 className="sub-header">Event Dashboard</h2>
       <table>
         <thead>
           <tr>
@@ -89,7 +90,9 @@ const Dashboard = () => {
                 <td>{formattedDate}</td>
                 <td>{event.description}</td>
                 <td>
-                  <button onClick={() => handleEdit(event)}>Edit</button>
+                  <button className="btn" onClick={() => handleEdit(event)}>
+                    Edit
+                  </button>
                   <button onClick={() => handleDelete(event._id)}>
                     Delete
                   </button>

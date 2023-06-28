@@ -8,15 +8,15 @@ import Login from "./components/Login";
 
 function App() {
   const [token, changeToken] = useState(localStorage.getItem("token"));
+  const [authenticated, setAuthenticated] = useState(false);
 
   const client = new ApiClient(
     () => token,
     () => logout()
   );
 
-  const login = (token) => {
-    localStorage.setItem("token", token);
-    changeToken(token);
+  const handleLogin = async () => {
+    setAuthenticated(true);
   };
 
   const logout = () => {
@@ -36,11 +36,18 @@ function App() {
   return (
     <div className="App">
       <h1>Event App</h1>
-      <div>
-        <Dashboard client={client} />
-        <AddEvent setEventList={setEventList} eventList={eventList} />
-      </div>
-      <Login />
+      {authenticated ? (
+        <div>
+          <Dashboard client={client} />
+          <AddEvent setEventList={setEventList} eventList={eventList} />
+        </div>
+      ) : (
+        <Login
+          handleLogin={handleLogin}
+          authenticated={authenticated}
+          setAuthenticated={setAuthenticated}
+        />
+      )}
     </div>
   );
 }

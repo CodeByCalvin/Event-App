@@ -4,23 +4,46 @@ import "../css/login.css";
 
 export default function Login(props) {
   const [disabled, setDisabled] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  function handleUsernameChange(event) {
+    setUsername(event.target.value);
+  }
+
+  function handlePasswordChange(event) {
+    setPassword(event.target.value);
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
     setDisabled(true);
-    const username = e.target.username.value;
-    const password = e.target.password.value;
-    props.client
-      .login(username, password)
-      .then(() => {
+
+    try {
+      const response = await fetch(
+        "https://event-app-api-qzts.onrender.com/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        console.log("User successfully logged in.");
+        props.setAuthenticated(true);
+        // window.location.href = "/";
+      } else {
+        console.error("Login failed.");
         setDisabled(false);
-        // if login is successful, the user will be redirected by the apiClient
-      })
-      .catch((error) => {
-        alert("Login failed:", error);
-        setDisabled(false);
-      });
-  };
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      setDisabled(false);
+    }
+  }
 
   return (
     <>
@@ -29,15 +52,27 @@ export default function Login(props) {
       <form onSubmit={handleSubmit}>
         Username:
         <br />
-        <input type="text" name="username" disabled={disabled} />
+        <input
+          type="text"
+          name="username"
+          value={username}
+          onChange={handleUsernameChange}
+          disabled={disabled}
+        />
         <br />
         Password:
         <br />
-        <input type="password" name="password" disabled={disabled} />
+        <input
+          type="password"
+          name="password"
+          value={password}
+          onChange={handlePasswordChange}
+          disabled={disabled}
+        />
         <br />
         <br />
         <button type="submit" disabled={disabled}>
-          submit
+          Login
         </button>
       </form>
     </>
