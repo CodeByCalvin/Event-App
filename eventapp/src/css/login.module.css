@@ -27,6 +27,7 @@ body {
   margin: 10px 0;
   font-size: 20px;
   padding: 10px;
+  margin: 10px;
 }
 
 /* Login Button */
@@ -41,6 +42,6 @@ body {
 }
 
 .btn:hover {
-  background: #0c1618;
+  background: #748b75;
   color: #f5fbef;
 }

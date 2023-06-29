@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 // Token and logout handler
 const dummyTokenProvider = () => localStorage.getItem("token");
@@ -19,11 +21,18 @@ const dummyLogoutHandler = () => {
 
 const apiClient = new ApiClient(dummyTokenProvider, dummyLogoutHandler);
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const [eventList, setEventList] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [showAddModal, setShowAddModal] = useState(false); // state for showing AddEventModal
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    props.handleLogout();
+    navigate("/");
+  };
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -59,7 +68,7 @@ const Dashboard = () => {
   };
 
   const handleCloseAddModal = () => {
-    setShowAddModal(false); // to close the AddEventModal
+    setShowAddModal(false);
   };
 
   return (
@@ -78,6 +87,13 @@ const Dashboard = () => {
               style={{ color: "#000000" }}
             />{" "}
             Add Event
+          </button>
+          <button className={styles["logout-btn"]} onClick={handleLogout}>
+            <FontAwesomeIcon
+              icon={faRightFromBracket}
+              style={{ color: "#000000" }}
+            />{" "}
+            Logout
           </button>
         </Col>
       </Row>
