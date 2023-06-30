@@ -105,6 +105,7 @@ function AppContent() {
               width="500"
               height="333"
               className="img-fluid"
+              alt="The title of the app, The Event App"
             ></img>
           </div>
         )}
@@ -128,7 +129,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <AppContent />
     </Router>
   );
