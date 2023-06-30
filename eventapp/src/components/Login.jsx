@@ -1,8 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import LoginCSS from "../css/login.module.css";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Register from "../components/Register";
+import toastr from "toastr";
 
 export default function Login(props) {
   const [disabled, setDisabled] = useState(false);
@@ -36,10 +38,11 @@ export default function Login(props) {
         localStorage.setItem("token", data.token);
         console.log("User successfully logged in.");
         props.setAuthenticated(true);
-        // window.location.href = "/";
+        props.handleLogin();
       } else {
         console.error("Login failed.");
         setDisabled(false);
+        toastr.error("Login failed.");
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -50,7 +53,6 @@ export default function Login(props) {
   return (
     <Container>
       <Row>
-        <Col lg={6}></Col>
         <Col lg={6}>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formUsername">
@@ -71,10 +73,12 @@ export default function Login(props) {
                 onChange={handlePasswordChange}
               />
             </Form.Group>
+
             <button type="submit" className={LoginCSS.btn}>
               Login
             </button>
           </Form>
+          <Register />
         </Col>
       </Row>
     </Container>

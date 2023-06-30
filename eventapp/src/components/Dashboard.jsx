@@ -11,15 +11,9 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import toastr from "toastr";
 
-// Token and logout handler
-const dummyTokenProvider = () => localStorage.getItem("token");
-const dummyLogoutHandler = () => {
-  localStorage.removeItem("token");
-  window.location.href = "/login";
-};
-
-const apiClient = new ApiClient(dummyTokenProvider, dummyLogoutHandler);
+const apiClient = new ApiClient();
 
 const Dashboard = (props) => {
   const [eventList, setEventList] = useState([]);
@@ -47,6 +41,7 @@ const Dashboard = (props) => {
     await apiClient.deleteEvent(id);
     const newEventList = eventList.filter((event) => event._id !== id);
     setEventList(newEventList);
+    toastr.error("Event deleted successfully.");
   };
 
   const handleEdit = (event) => {
@@ -65,6 +60,7 @@ const Dashboard = (props) => {
     );
     setEventList(newEventList);
     setShowEditModal(false);
+    toastr.success("Event updated successfully.");
   };
 
   const handleCloseAddModal = () => {

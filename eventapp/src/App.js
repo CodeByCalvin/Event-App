@@ -11,7 +11,10 @@ import {
   Route,
   Navigate,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 
 function Main(props) {
   return (
@@ -46,47 +49,87 @@ function Main(props) {
   );
 }
 
-function App() {
+function AppContent() {
   const [token, changeToken] = useState(localStorage.getItem("token"));
   const [authenticated, setAuthenticated] = useState(!!token);
-  const [eventList, setEventList] = useState([
-    {
-      name: "Test event",
-      date: "25th March 2023",
-      description: "This is my event description",
-      location: "Test location",
-    },
-  ]);
+  const [eventList, setEventList] = useState([]);
+
+  const location = useLocation();
+
+  // Notifications
+  toastr.options = {
+    closeButton: true,
+    debug: false,
+    newestOnTop: false,
+    progressBar: true,
+    positionClass: "toast-bottom-right",
+    preventDuplicates: false,
+    onclick: null,
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "2000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut",
+  };
 
   const client = new ApiClient(
     () => token,
-    () => handleLogout()
+    () => handleLogout(),
+    () => setAuthenticated(false),
+    () => handleLogin()
   );
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     setAuthenticated(true);
+    changeToken(localStorage.getItem("token"));
+    toastr["success"]("You have successfully logged in", "Login");
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     changeToken(undefined);
     setAuthenticated(false);
+    toastr["error"]("You have successfully logged out", "Logout");
   };
 
   return (
-    <Router>
-      <div className="App">
-        <h1>Event App</h1>
-        <br />
-        <br />
-        <Main
-          authenticated={authenticated}
-          handleLogin={handleLogin}
-          eventList={eventList}
-          setAuthenticated={setAuthenticated}
-          handleLogout={handleLogout}
-        />
+    <div className="App container">
+      <div className="row">
+        {location.pathname !== "/dashboard" && (
+          <div className="col-md-6 d-flex justify-content-center align-items-center">
+            <img
+              src="https://play-lh.googleusercontent.com/e8gEo_Rl6kIjeXreXDXW4lxswkx1sOyzukaKUHWnaULAc4Xo9FbkmvI3grK6pa4QnKI"
+              width="500"
+              height="333"
+              className="img-fluid"
+            ></img>
+          </div>
+        )}
+        <div
+          className={`${
+            location.pathname === "/dashboard" ? "col-md-12" : "col-md-6"
+          } d-flex justify-content-center align-items-center`}
+        >
+          <Main
+            authenticated={authenticated}
+            handleLogin={handleLogin}
+            eventList={eventList}
+            setAuthenticated={setAuthenticated}
+            handleLogout={handleLogout}
+          />
+        </div>
       </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

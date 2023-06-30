@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { ApiClient } from "../apiClient";
 import { Modal, Button, Form } from "react-bootstrap";
 import "../css/addEvent.module.css";
+import toastr from "toastr";
 
 function AddEvent(props) {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
-  // Need to use tokenProvider and logoutHandler in the future
   const apiClient = new ApiClient();
 
   const handleChangeName = (event) => {
@@ -23,7 +23,8 @@ function AddEvent(props) {
     setDescription(event.target.value);
   };
 
-  const handleAdd = async () => {
+  const handleAdd = async (event) => {
+    event.preventDefault();
     const newItem = {
       id: Date.now(),
       name: name,
@@ -37,8 +38,11 @@ function AddEvent(props) {
       setName("");
       setDate("");
       setDescription("");
+      toastr.success("Event added");
+      props.handleClose();
     } catch (error) {
       console.error("Failed to add event:", error);
+      toastr.error("Something went wrong");
     }
   };
 
@@ -48,7 +52,7 @@ function AddEvent(props) {
         <Modal.Title>Add Event</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={handleAdd}>
           <Form.Group controlId="formEventName">
             <Form.Label>Name</Form.Label>
             <Form.Control
@@ -56,6 +60,7 @@ function AddEvent(props) {
               value={name}
               onChange={handleChangeName}
               placeholder="Enter event name"
+              required
             />
           </Form.Group>
 
@@ -65,6 +70,7 @@ function AddEvent(props) {
               type="date"
               value={date}
               onChange={handleChangeDate}
+              required
             />
           </Form.Group>
 
@@ -77,16 +83,16 @@ function AddEvent(props) {
               placeholder="Enter event description"
             />
           </Form.Group>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={props.handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" type="submit">
+              Add
+            </Button>
+          </Modal.Footer>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleAdd}>
-          Add
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 }
